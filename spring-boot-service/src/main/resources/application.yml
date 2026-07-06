@@ -1,0 +1,38 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: metrics-processor
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_DATABASE:metrics_platform}
+    username: ${DB_USERNAME:metrics_user}
+    password: ${DB_PASSWORD:metrics_password}
+    driver-class-name: org.postgresql.Driver
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+metrics:
+  kafka:
+    bootstrap-servers: ${KAFKA_BROKERS:localhost:9092}
+    application-id: metrics-processor
+    events-topic: ${KAFKA_EVENTS_TOPIC:http-events}
+    # Tumbling window size for real-time aggregation, and how long late-arriving
+    # events are still accepted for a window that has technically closed.
+    window-size-seconds: ${WINDOW_SIZE_SECONDS:60}
+    grace-period-seconds: ${GRACE_PERIOD_SECONDS:30}
+
+logging:
+  level:
+    org.apache.kafka.streams: INFO
+    com.metrics.processor: DEBUG

@@ -1,19 +1,14 @@
-/node_modules
-/public/build
-/public/hot
-/public/storage
-/storage/*.key
-/vendor
-.env
-.env.backup
-.env.production
-.phpunit.result.cache
-Homestead.json
-Homestead.yaml
-auth.json
-npm-debug.log
-yarn-error.log
-/.fleet
-/.idea
-/.vscode
-*.php
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+.fleet/
+
+# Spring Boot / Maven
+spring-boot-service/target/
+*.class
+*.jar
+!spring-boot-service/.mvn/wrapper/maven-wrapper.jar
+
+# Docker
+docker-compose.override.yml

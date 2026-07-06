@@ -1,0 +1,341 @@
+API Documentation
+
+Base URL:
+
+/api
+
+Users
+Create Regular User
+
+URL: /users/createUser
+
+Method: POST
+
+Auth: None
+
+Request Body (JSON):
+
+{
+  "email": "user@example.com",
+  "password": "securePassword123"
+}
+
+
+Response (JSON):
+
+{
+  "data": {
+    "user_id": "uuid",
+    "email": "user@example.com",
+    "role": "regular"
+  }
+}
+
+User Login
+
+URL: /users/login
+
+Method: POST
+
+Auth: None
+
+Request Body (JSON):
+
+{
+  "email": "user@example.com",
+  "password": "securePassword123"
+}
+
+
+Response (JSON):
+
+{
+  "token_type": "bearer",
+  "access_token": "jwt_token_here",
+  "expires_in": "60 Minutes"
+}
+
+Create Admin User
+
+URL: /users/createAdminUser
+
+Method: POST
+
+Auth: JWT + Permission createAdminUsers
+
+Request Body (JSON):
+
+{
+  "email": "admin@example.com",
+  "password": "securePassword123"
+}
+
+
+Response (JSON):
+
+{
+  "data": {
+    "user_id": "uuid",
+    "email": "admin@example.com",
+    "role": "admin"
+  }
+}
+
+Promote Regular User to Admin
+
+URL: /users/promoteRegularUserToAdmin/{email}
+
+Method: POST
+
+Auth: JWT + Permission createAdminUsers
+
+Response (JSON):
+
+{
+  "success_status": true
+}
+
+Get User by Email
+
+URL: /users/getUserByEmail/{email}
+
+Method: POST
+
+Auth: JWT + Permission createAdminUsers
+
+Response (JSON):
+
+{
+  "data": {
+    "user_id": "uuid",
+    "email": "user@example.com",
+    "role": "regular"
+  }
+}
+
+Get User by ID
+
+URL: /users/getUserById
+
+Method: POST
+
+Auth: JWT
+
+Response (JSON):
+
+{
+  "data": {
+    "user_id": "uuid",
+    "email": "user@example.com",
+    "role": "regular"
+  }
+}
+
+Delete User by ID
+
+URL: /users/deleteUserById
+
+Method: POST
+
+Auth: JWT
+
+Response (JSON):
+
+{
+  "success_status": true
+}
+
+Delete User by Email
+
+URL: /users/deleteUserByEmail/{email}
+
+Method: POST
+
+Auth: JWT + Permission deleteUsers
+
+Response (JSON):
+
+{
+  "success_status": true
+}
+
+Check Old Password
+
+URL: /users/oldPassword
+
+Method: POST
+
+Auth: JWT
+
+Request Body (JSON):
+
+{
+  "old_password": "oldPassword123"
+}
+
+
+Response (Boolean):
+
+true
+
+Update User Password
+
+URL: /users/updatePassword
+
+Method: POST
+
+Auth: JWT
+
+Request Body (JSON):
+
+{
+  "new_password": "newSecurePassword123"
+}
+
+
+Response (JSON):
+
+{
+  "success_status": true
+}
+
+API Keys
+Create API Key
+
+URL: /apikeys/createKey/{name}
+
+Method: POST
+
+Auth: JWT
+
+Response (JSON):
+
+{
+  "apiKey": {
+    "api_id": "uuid",
+    "user_id": "uuid",
+    "name": "Key Name",
+    "key": "random_generated_key",
+    "active": true
+  }
+}
+
+Get API Key by ID
+
+URL: /apikeys/getApiDetails/{api_id}
+
+Method: POST
+
+Auth: JWT
+
+Response (JSON):
+
+{
+  "data": {
+    "api_id": "uuid",
+    "user_id": "uuid",
+    "name": "Key Name",
+    "key": "random_generated_key",
+    "active": true
+  }
+}
+
+Get All API Keys
+
+URL: /apikeys/getAllKeys
+
+Method: POST
+
+Auth: JWT + Permission createAdminUsers
+
+Query Parameter (Optional): pagenumber (default 1)
+
+Response (JSON):
+
+{
+  "data": [
+    {
+      "api_id": "uuid",
+      "user_id": "uuid",
+      "name": "Key Name",
+      "key": "random_generated_key",
+      "active": true
+    }
+  ]
+}
+
+Get All API Keys for User ID
+
+URL: /apikeys/getAllKeysForId/{user_id}
+
+Method: POST
+
+Auth: JWT
+
+Query Parameter (Optional): pagenumber (default 1)
+
+Response (JSON):
+
+{
+  "data": [
+    {
+      "api_id": "uuid",
+      "user_id": "uuid",
+      "name": "Key Name",
+      "key": "random_generated_key",
+      "active": true
+    }
+  ]
+}
+
+Activate API Key
+
+URL: /apikeys/activateKey/{api_id}
+
+Method: POST
+
+Auth: JWT + Permission createAdminUsers
+
+Response: 204 No Content
+
+Deactivate API Key
+
+URL: /apikeys/deactivateKey/{api_id}
+
+Method: POST
+
+Auth: JWT + Permission createAdminUsers
+
+Response: 204 No Content
+
+Events
+Register Event
+
+URL: /events/registerEvent
+
+Method: POST
+
+Auth: API Key (X-API-KEY in headers)
+
+Request Headers:
+
+X-API-KEY: your_api_key_here
+
+
+Request Body (JSON):
+
+{
+  "event_type": "click",
+  "url": "https://example.com/page"
+}
+
+
+Response (JSON):
+
+{
+  "event_id": "uuid",
+  "api_id": "uuid",
+  "event_type": "click",
+  "url": "https://example.com/page",
+  "timestamp": "2025-09-13T12:00:00Z"
+}
